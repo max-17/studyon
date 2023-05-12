@@ -57,11 +57,11 @@ class User(AbstractUser):
         super().save(*args, **kwargs)  # Call the "real" save() method.
         if self.isAuthor:
             Author.objects.create(user=self)
-<<<<<<< HEAD
+
         if not self.isAuthor and not self.is_superuser:
-=======
+
         else:
->>>>>>> bf85c6042b51f32c313570aff81a4d9b44e89503
+
             Student.objects.create(user=self)
 
 
@@ -93,12 +93,12 @@ class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     last_name = models.CharField(max_length=255, blank=True)
     first_name = models.CharField(max_length=255, blank=True)
-<<<<<<< HEAD
+
     avatar = models.FileField(
         upload_to=None, max_length=100, blank=True, null=True)
-=======
+
     avatar = models.FileField(upload_to=None, max_length=100, blank=True)
->>>>>>> bf85c6042b51f32c313570aff81a4d9b44e89503
+
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -120,11 +120,11 @@ class Lecture(models.Model):
     course = models.ForeignKey(
         Course, on_delete=models.CASCADE, related_name='courses')
     video = models.FileField(upload_to=None, max_length=100)
-<<<<<<< HEAD
+
     text = models.TextField(blank=True)
-=======
+
     text = models.TextField()
->>>>>>> bf85c6042b51f32c313570aff81a4d9b44e89503
+
 
 
 class Assignment(models.Model):

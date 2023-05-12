@@ -4,20 +4,15 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-<<<<<<< HEAD
-=======
-import Link from '@mui/material/Link';
->>>>>>> bf85c6042b51f32c313570aff81a4d9b44e89503
+
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-<<<<<<< HEAD
+
 import { useNavigate, Link } from 'react-router-dom';
-=======
-import { useNavigate } from 'react-router-dom';
->>>>>>> bf85c6042b51f32c313570aff81a4d9b44e89503
+
 import { useEffect, useState } from 'react';
 import axios from '../axios';
 const LOGIN_URL = '/auth/jwt/create';
@@ -49,7 +44,6 @@ export default function SignIn() {
     e.preventDefault();
 
     try {
-<<<<<<< HEAD
       const response = await axios.post(LOGIN_URL, { email, password, headers: {} });
       const accessToken = response.data.access;
       localStorage.setItem('accessToken', accessToken);
@@ -60,12 +54,6 @@ export default function SignIn() {
       console.log(user);
       const account = user.data.isAuthor ? '/author' : '/student';
       navigate(account);
-=======
-      const response = await axios.post(LOGIN_URL, { email, password });
-      const accessToken = response.data.access;
-      localStorage.setItem('accessToken', accessToken);
-      navigate('/account');
->>>>>>> bf85c6042b51f32c313570aff81a4d9b44e89503
     } catch (err) {
       console.log(err);
       if (!err.response) {
@@ -130,13 +118,11 @@ export default function SignIn() {
               </Link>
             </Grid>
             <Grid item>
-<<<<<<< HEAD
               <Link to='/signup' variant='body2'>
                 "Don't have an account? Sign Up"
-=======
+              </Link>
               <Link href='/signup' variant='body2'>
-                {"Don't have an account? Sign Up"}
->>>>>>> bf85c6042b51f32c313570aff81a4d9b44e89503
+                Don't have an account? Sign Up
               </Link>
             </Grid>
           </Grid>

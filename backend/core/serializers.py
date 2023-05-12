@@ -1,12 +1,12 @@
 
 from .models import *
 from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer, UserSerializer as BaseUserSerializer
-<<<<<<< HEAD
+
 
 from rest_framework import serializers, viewsets, status
 
 
-=======
+
 from rest_framework import serializers, viewsets, status
 
 
@@ -16,7 +16,7 @@ class SignInSerializer(serializers.Serializer):
         max_length=255, required=True, write_only=True)
 
 
->>>>>>> bf85c6042b51f32c313570aff81a4d9b44e89503
+
 class UserCreateSerializer(BaseUserCreateSerializer):
     class Meta(BaseUserCreateSerializer.Meta):
         fields = ['id', 'email', 'password', 'isAuthor']
@@ -40,8 +40,8 @@ class StudentSerializer(serializers.ModelSerializer):
                   'birth_date', 'first_name', 'last_name', 'user_email']
 
 
-<<<<<<< HEAD
-=======
+
+
 class AuthorSerializer(serializers.ModelSerializer):
     user = serializers.IntegerField(read_only=True)
 
@@ -53,7 +53,7 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = ['user']
 
 
->>>>>>> bf85c6042b51f32c313570aff81a4d9b44e89503
+
 # class QueueCreateSerializer(serializers.ModelSerializer):
 
 #     # customer = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -100,12 +100,12 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
 
-<<<<<<< HEAD
+
     class Meta:
         model = Course
         fields = ['id', 'title', 'author']
         # depth = 1
-=======
+
     def validate(self, data):
         author_id = self.context['author_id']
 
@@ -121,7 +121,7 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = ['id', 'title', 'author']
         depth = 1
->>>>>>> bf85c6042b51f32c313570aff81a4d9b44e89503
+
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -133,11 +133,11 @@ class AuthorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Author
-<<<<<<< HEAD
+
         fields = '__all__'
-=======
+
         fields = ['id', 'last_name', 'first_name', 'avatar', 'courses']
->>>>>>> bf85c6042b51f32c313570aff81a4d9b44e89503
+
 
 
 class ListCourseSerializer(serializers.ModelSerializer):

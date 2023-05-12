@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 import { Box, Button, Fade, useScrollTrigger } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from '../axios';
-=======
-import { Box, Fade, useScrollTrigger } from '@mui/material';
->>>>>>> bf85c6042b51f32c313570aff81a4d9b44e89503
 
 export function ScrollTop(props) {
   const { children } = props;
@@ -34,7 +30,6 @@ export function ScrollTop(props) {
     </Fade>
   );
 }
-<<<<<<< HEAD
 
 export const LinkButton = (props) => {
   const navigate = useNavigate();
@@ -55,5 +50,3 @@ export const fetchData = async (link, setState) => {
     console.log(error);
   }
 };
-=======
->>>>>>> bf85c6042b51f32c313570aff81a4d9b44e89503

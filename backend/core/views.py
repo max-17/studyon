@@ -36,7 +36,7 @@ class StudentRetrieveUpdateAPIView(RetrieveUpdateAPIView):
         return get_object_or_404(Student, user_id=self.request.user.id)
 
     permission_classes = [IsAuthenticated]
-<<<<<<< HEAD
+
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -63,5 +63,5 @@ class CourseViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-=======
->>>>>>> bf85c6042b51f32c313570aff81a4d9b44e89503
+
+
