@@ -5,6 +5,16 @@ from django.contrib.auth.models import AbstractUser
 # from django.db import models
 from django.db import models
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+
+
+def validate_positive(value):
+    if value < 0:
+        raise ValidationError(
+            _("%(value)s is not a positive number"),
+            params={"value": value},
+        )
 
 
 class CustomUserManager(BaseUserManager):
@@ -59,9 +69,6 @@ class User(AbstractUser):
             Author.objects.create(user=self)
 
         if not self.isAuthor and not self.is_superuser:
-
-        else:
-
             Student.objects.create(user=self)
 
 
@@ -99,17 +106,17 @@ class Author(models.Model):
 
     avatar = models.FileField(upload_to=None, max_length=100, blank=True)
 
-
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
 
 class Course(models.Model):
     title = models.CharField(max_length=100)
+    price = models.IntegerField(default=0, validators=[validate_positive])
     author = models.ForeignKey(
         Author, on_delete=models.CASCADE,  related_name='courses')
     duration = models.CharField(max_length=50)
-    image = models.FileField(upload_to=None, max_length=100)
+    coverImg = models.FileField(upload_to=None, max_length=100)
 
     def __str__(self):
         return self.title
@@ -124,7 +131,6 @@ class Lecture(models.Model):
     text = models.TextField(blank=True)
 
     text = models.TextField()
-
 
 
 class Assignment(models.Model):

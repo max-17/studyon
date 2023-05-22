@@ -1,3 +1,4 @@
+from .views import AuthorRetrieveUpdateAPIView, StudentRetrieveUpdateAPIView
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 
@@ -6,8 +7,6 @@ from .views import AuthorRetrieveUpdateAPIView, StudentRetrieveUpdateAPIView, Co
 
 router = DefaultRouter()
 router.register(r'author/courses', CourseViewSet, basename='course')
-
-from .views import AuthorRetrieveUpdateAPIView, StudentRetrieveUpdateAPIView
 
 
 urlpatterns = [
@@ -19,6 +18,3 @@ urlpatterns = [
 
 urlpatterns = format_suffix_patterns(
     urlpatterns) + router.urls
-
-urlpatterns = format_suffix_patterns(urlpatterns)
-

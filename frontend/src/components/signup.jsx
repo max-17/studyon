@@ -69,7 +69,7 @@ export default function SignUp() {
         if (!err.response) {
           setErrMsg('No Server Response');
         } else {
-          const errorMessage = Object.values(err.response.data)[0][0];
+          const errorMessage = Object.values(err.response.data)[0];
           setErrMsg(errorMessage);
         }
       }

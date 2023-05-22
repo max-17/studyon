@@ -38,7 +38,6 @@ class StudentRetrieveUpdateAPIView(RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated]
 
 
-
 class CourseViewSet(viewsets.ModelViewSet):
 
     serializer_class = CourseSerializer
@@ -51,9 +50,11 @@ class CourseViewSet(viewsets.ModelViewSet):
 
         data = {
             **request.data,
-            'author': Author.objects.get(user=request.user).id,
+            'author': Author.objects.get(user=request.user),
+            'author_id': Author.objects.get(user=request.user).id,
         }
-
+        print(80*'*')
+        print(data)
         serializer = CourseSerializer(data=data)
 
         serializer.is_valid(raise_exception=True)
@@ -63,5 +64,3 @@ class CourseViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-

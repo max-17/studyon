@@ -82,6 +82,11 @@ export default function SignIn() {
         <Typography component='h1' variant='h5'>
           Sign in
         </Typography>
+
+        <Typography color='error' component='h6' variant='h6'>
+          {errMsg}
+        </Typography>
+
         <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin='normal'
@@ -118,9 +123,6 @@ export default function SignIn() {
               </Link>
             </Grid>
             <Grid item>
-              <Link to='/signup' variant='body2'>
-                "Don't have an account? Sign Up"
-              </Link>
               <Link href='/signup' variant='body2'>
                 Don't have an account? Sign Up
               </Link>

@@ -6,7 +6,6 @@ from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer,
 from rest_framework import serializers, viewsets, status
 
 
-
 from rest_framework import serializers, viewsets, status
 
 
@@ -14,7 +13,6 @@ class SignInSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
     password = serializers.CharField(
         max_length=255, required=True, write_only=True)
-
 
 
 class UserCreateSerializer(BaseUserCreateSerializer):
@@ -40,8 +38,6 @@ class StudentSerializer(serializers.ModelSerializer):
                   'birth_date', 'first_name', 'last_name', 'user_email']
 
 
-
-
 class AuthorSerializer(serializers.ModelSerializer):
     user = serializers.IntegerField(read_only=True)
 
@@ -51,7 +47,6 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = ['user']
-
 
 
 # class QueueCreateSerializer(serializers.ModelSerializer):
@@ -100,28 +95,24 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
 
+    author = serializers.CharField(read_only=True)
 
     class Meta:
         model = Course
-        fields = ['id', 'title', 'author']
+        fields = ['id', 'title', 'author', 'price']
         # depth = 1
 
     def validate(self, data):
-        author_id = self.context['author_id']
+        author_id = self.initial_data['author_id']
+        # author_id = data['author_id']
 
         return data
 
-    def create(self, validated_data):
-        author_id = self.context['author_id']
-        validated_data['author_id'] = author_id
-        course = Course.objects.create(**validated_data)
-        return course
-
-    class Meta:
-        model = Course
-        fields = ['id', 'title', 'author']
-        depth = 1
-
+    # def create(self, validated_data):
+    #     author_id = self.context['author_id']
+    #     validated_data['author_id'] = author_id
+    #     course = Course.objects.create(**validated_data)
+    #     return course
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -137,7 +128,6 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
         fields = ['id', 'last_name', 'first_name', 'avatar', 'courses']
-
 
 
 class ListCourseSerializer(serializers.ModelSerializer):

@@ -7,8 +7,8 @@ import SignUp from 'components/signup';
 import ResponsiveAppBar from 'components/appBar';
 import CourseDetail from 'components/course/courseDetail';
 import theme from 'components/theme';
-import AuthorAccount from 'components/authhor/account';
-import AuthorCourseDetail from 'components/authhor/course/courseDetail';
+import AuthorAccount from 'components/author/account';
+import AuthorCourseDetail from 'components/author/course/courseDetail';
 import PageNotFound from 'components/404-page';
 
 import { Routes, Route } from 'react-router-dom';
