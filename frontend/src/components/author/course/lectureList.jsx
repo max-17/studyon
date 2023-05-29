@@ -83,7 +83,7 @@ const AuthorLectureList = () => {
               }}
               onChange={(event, editor) => {
                 const data = editor.getData();
-                // setEditedLecture({ ...currentLecture, text: data });
+                setEditedLecture({ ...currentLecture, text: data });
                 // console.log({ event, editor, data });
               }}
               ref={textRef}
