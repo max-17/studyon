@@ -21,10 +21,10 @@ const { primary } = theme.palette;
 
 const CardActionArea = (props) => {
   const navigate = useNavigate();
-  return <DefaultCardActionArea {...props} onClick={() => navigate('course')}></DefaultCardActionArea>;
+  return <DefaultCardActionArea {...props} onClick={() => navigate(props.link)}></DefaultCardActionArea>;
 };
 
-export const CourseCard = ({ image, author, authorIcon, title, rating, price, duration, lectures }) => {
+export const CourseCard = ({ id, image, author, authorIcon, title, rating, price, duration, lectures }) => {
   const navigate = useNavigate();
   return (
     <Card
@@ -32,7 +32,7 @@ export const CourseCard = ({ image, author, authorIcon, title, rating, price, du
       variant='outlined'
       sx={{ borderRadius: '1rem', borderColor: primary.line, maxWidth: 450, margin: 'auto' }}
     >
-      <CardActionArea>
+      <CardActionArea link={`${id}`}>
         <CardMedia component='img' image={image} sx={{ borderRadius: '1.5rem', padding: '.7rem' }} />
       </CardActionArea>
 
@@ -70,7 +70,7 @@ export const CourseCard = ({ image, author, authorIcon, title, rating, price, du
           sx={{ background: primary.light, borderRadius: 2, padding: 1.5 }}
         >
           <Typography component='legend' variant='h6' color='primary' fontWeight='bold'>
-            {price}
+            {`${price} KRW`}
           </Typography>
 
           <Box sx={{ display: 'flex', alignItems: 'center' }}>

@@ -59,7 +59,7 @@ class LectureAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ['title', 'author', 'duration']
+    list_display = ['id', 'title', 'author', 'duration']
 
 
 @admin.register(Author)

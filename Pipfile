@@ -9,6 +9,7 @@ django = "*"
 djoser = "*"
 django-filter = "*"
 django-cors-headers = "*"
+django-ckeditor = "*"
 
 [dev-packages]
 autopep8 = "*"

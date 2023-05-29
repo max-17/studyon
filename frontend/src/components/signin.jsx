@@ -53,8 +53,9 @@ export default function SignIn() {
       });
       console.log(user);
       const account = user.data.isAuthor ? '/author' : '/student';
-      navigate(account);
+      navigate(account, { replace: true });
     } catch (err) {
+      console.log('signin error');
       console.log(err);
       if (!err.response) {
         setErrMsg('No Server Response');

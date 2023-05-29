@@ -93,26 +93,37 @@ class AuthorSerializer(serializers.ModelSerializer):
 #         model = FormData
 #         fields = ['id', 'form', 'data',]
 
-class CourseSerializer(serializers.ModelSerializer):
+class CourseCreateSerializer(serializers.ModelSerializer):
 
-    author = serializers.CharField(read_only=True)
+    # author = serializers.CharField(read_only=True)
 
     class Meta:
         model = Course
-        fields = ['id', 'title', 'author', 'price']
-        # depth = 1
+        fields = ['id', 'title', 'author']
 
-    def validate(self, data):
-        author_id = self.initial_data['author_id']
-        # author_id = data['author_id']
 
-        return data
+class LectureSerializer(serializers.ModelSerializer):
 
-    # def create(self, validated_data):
-    #     author_id = self.context['author_id']
-    #     validated_data['author_id'] = author_id
-    #     course = Course.objects.create(**validated_data)
-    #     return course
+    class Meta:
+        model = Lecture
+        fields = ['id', 'title', 'course', 'video', 'text']
+
+
+class LectureCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Lecture
+        fields = ['id', 'title', 'course', 'video', 'text']
+
+
+class CourseSerializer(serializers.ModelSerializer):
+
+    lectures = LectureSerializer(many=True)
+
+    class Meta:
+        model = Course
+        fields = ['id', 'title', 'author', 'price',
+                  'lectures', 'coverImg', 'duration']
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -133,5 +144,5 @@ class AuthorSerializer(serializers.ModelSerializer):
 class ListCourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = ['id', 'title', 'author',]
+        fields = ['id', 'title', 'author', 'price']
         depth = 1

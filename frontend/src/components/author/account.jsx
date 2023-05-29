@@ -17,7 +17,7 @@ import AuthorCourseList from './course/courseList';
 import { LinkButton } from '../utils';
 import Assignments from './assignments';
 import Students from './students';
-import AuthorCourseDetail from './course/courseDetail';
+import AuthorLectureList from './course/lectureList';
 import PageNotFound from 'components/404-page';
 
 const menu = [
@@ -41,10 +41,15 @@ const AuthorAccount = () => {
   const fetchData = async () => {
     // You can await here
     try {
-      const response = await axios.get('author/');
+      const response = await axios.get('author/', {
+        headers: { Authorization: `JWT ${localStorage.getItem('accessToken')}` },
+      });
       setData(() => ({ ...response.data }));
     } catch (error) {
       console.log(error);
+      if (error.request.status == 401) {
+        navigate('/signin', { replace: true });
+      }
     }
   };
 

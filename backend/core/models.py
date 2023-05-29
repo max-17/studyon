@@ -7,6 +7,7 @@ from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from ckeditor.fields import RichTextField
 
 
 def validate_positive(value):
@@ -125,12 +126,10 @@ class Course(models.Model):
 class Lecture(models.Model):
     title = models.CharField(max_length=255)
     course = models.ForeignKey(
-        Course, on_delete=models.CASCADE, related_name='courses')
+        Course, on_delete=models.CASCADE, related_name='lectures')
     video = models.FileField(upload_to=None, max_length=100)
 
-    text = models.TextField(blank=True)
-
-    text = models.TextField()
+    text = RichTextField(blank=True)
 
 
 class Assignment(models.Model):

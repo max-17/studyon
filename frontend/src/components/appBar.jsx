@@ -11,7 +11,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-
 import * as React from 'react';
 
 import Button from '@mui/material/Button';
@@ -19,6 +18,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
+// import logo from './images/logo-study-on.png';
 
 const drawerWidth = 240;
 const navItems = ['Home', 'All Courses', 'Contact', 'Sign Up'];
@@ -76,7 +76,7 @@ function DrawerAppBar(props) {
             >
               <MenuIcon />
             </IconButton>
-            <img src='./images/logo-study-on.png' height={40} pl={4} sx={{ display: { xs: 'none', sm: 'block' } }} />
+            <img src='images/logo-study-on.png' height={40} pl={4} sx={{ display: { xs: 'none', sm: 'block' } }} />
 
             <Box
               sx={{

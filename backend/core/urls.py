@@ -3,10 +3,18 @@ from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 
 from rest_framework.routers import DefaultRouter
-from .views import AuthorRetrieveUpdateAPIView, StudentRetrieveUpdateAPIView, CourseViewSet
+from rest_framework_extensions.routers import ExtendedSimpleRouter
 
-router = DefaultRouter()
-router.register(r'author/courses', CourseViewSet, basename='course')
+from .views import AuthorRetrieveUpdateAPIView, StudentRetrieveUpdateAPIView, CourseViewSet, LectureViewSet
+
+router = ExtendedSimpleRouter()
+(
+    router.register(r'author/courses', CourseViewSet, basename='course').register(r'lectures',
+                                                                                  LectureViewSet,
+                                                                                  basename='courses-lecture',
+                                                                                  parents_query_lookups=['course'])
+
+)
 
 
 urlpatterns = [

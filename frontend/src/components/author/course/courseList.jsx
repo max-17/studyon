@@ -10,12 +10,14 @@ import {
   IconButton,
   Typography,
   TextField,
+  Grid,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useRef, useState } from 'react';
 import { LinkButton, fetchData } from '../../utils';
 import axios from '../../../axios';
 import { useNavigate } from 'react-router-dom';
+import { CourseCard } from 'components/course/courseCard';
 
 const AuthorCourseList = () => {
   const navigate = useNavigate();
@@ -37,35 +39,16 @@ const AuthorCourseList = () => {
       <Button onClick={handleSubmit} variant='contained' startIcon={<Add />}>
         Add Course
       </Button>
-      <List
-        sx={{ width: '100%', bgcolor: 'background.paper' }}
-        component='nav'
-        aria-labelledby='nested-list-subheader'
-        subheader={
-          <ListSubheader component='div' id='nested-list-subheader'>
-            List of Courses
-          </ListSubheader>
-        }
-      >
-        {Object.values(data).map((course) => (
-          <ListItem
-            key={course.id}
-            disablePadding
-            secondaryAction={
-              <IconButton edge='end' aria-label='delete' sx={{ background: 'white' }}>
-                <DeleteIcon />
-              </IconButton>
-            }
-          >
-            <ListItemButton onClick={() => navigate(`${course.id}`)}>
-              <ListItemText
-                primary={course.title}
-                sx={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      <Grid container>
+        {Object.values(data).map((course, index) => {
+          console.log(course);
+          return (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <CourseCard {...course} lectures={course.lectures.length} image={course.coverImg} />
+            </Grid>
+          );
+        })}
+      </Grid>
     </>
   );
 };
