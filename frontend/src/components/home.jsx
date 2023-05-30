@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Grid from '@mui/material/Unstable_Grid2';
 import {
@@ -15,14 +15,22 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-import { ScrollTop } from './utils';
+import { ScrollTop, fetchData } from './utils';
 import { CourseCard } from './course/courseCard';
 
 import Footer from './footer';
 import theme from './theme';
+import { useNavigate } from 'react-router-dom';
 
 const Home = (props) => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    fetchData('courses/', setData);
+    console.log(data);
+  }, []);
+
   return (
     <Container>
       {/* hero section */}
@@ -86,11 +94,15 @@ const Home = (props) => {
       {/* searchbar end */}
 
       <Grid container spacing={3} style={{ margin: '1rem' }}>
-        {courses.map((data, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <CourseCard {...data} />
-          </Grid>
-        ))}
+        {data &&
+          Object.values(data).map((course, index) => {
+            console.log(course);
+            return (
+              <Grid item xs={12} sm={6} lg={4} md={6} key={index}>
+                <CourseCard {...course} lectures={course.lectures.length} image={course.coverImg} />
+              </Grid>
+            );
+          })}
       </Grid>
       {/* scroll to top button */}
       <ScrollTop {...props}>

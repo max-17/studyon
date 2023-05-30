@@ -1,20 +1,7 @@
 import { Add } from '@mui/icons-material';
-import {
-  Button,
-  List,
-  ListSubheader,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  ListItem,
-  IconButton,
-  Typography,
-  TextField,
-  Grid,
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, TextField, Grid, Container } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
-import { LinkButton, fetchData } from '../../utils';
+import { fetchData } from '../../utils';
 import axios from '../../../axios';
 import { useNavigate } from 'react-router-dom';
 import { CourseCard } from 'components/course/courseCard';
@@ -39,16 +26,18 @@ const AuthorCourseList = () => {
       <Button onClick={handleSubmit} variant='contained' startIcon={<Add />}>
         Add Course
       </Button>
-      <Grid container>
-        {Object.values(data).map((course, index) => {
-          console.log(course);
-          return (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <CourseCard {...course} lectures={course.lectures.length} image={course.coverImg} />
-            </Grid>
-          );
-        })}
-      </Grid>
+      <Container maxWidth='full'>
+        <Grid container spacing={2}>
+          {Object.values(data).map((course, index) => {
+            console.log(course);
+            return (
+              <Grid item xs={12} sm={6} lg={4} md={6} key={index}>
+                <CourseCard {...course} lectures={course.lectures.length} image={course.coverImg} />
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Container>
     </>
   );
 };

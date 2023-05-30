@@ -33,7 +33,7 @@ export const CourseCard = ({ id, image, author, authorIcon, title, rating, price
       sx={{ borderRadius: '1rem', borderColor: primary.line, maxWidth: 450, margin: 'auto' }}
     >
       <CardActionArea link={`${id}`}>
-        <CardMedia component='img' image={image} sx={{ borderRadius: '1.5rem', padding: '.7rem' }} />
+        <CardMedia component='img' height='194' image={image} sx={{ borderRadius: '1.5rem', padding: '.7rem' }} />
       </CardActionArea>
 
       <CardContent sx={{ padding: '0.7rem' }}>

@@ -44,7 +44,9 @@ export const LinkButton = (props) => {
 export const fetchData = async (link, setState) => {
   // You can await here
   try {
-    const response = await axios.get(link);
+    const response = await axios.get(link, {
+      headers: { Authorization: `JWT ${localStorage.getItem('accessToken')}` },
+    });
     setState(() => ({ ...response.data }));
   } catch (error) {
     console.log(error);

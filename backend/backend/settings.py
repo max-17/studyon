@@ -185,5 +185,5 @@ if DEBUG:
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False,
     }
-MEDIA_ROOT = BASE_DIR / 'None'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = '/'

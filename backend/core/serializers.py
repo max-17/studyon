@@ -2,10 +2,6 @@
 from .models import *
 from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer, UserSerializer as BaseUserSerializer
 
-
-from rest_framework import serializers, viewsets, status
-
-
 from rest_framework import serializers, viewsets, status
 
 
@@ -49,50 +45,6 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = ['user']
 
 
-# class QueueCreateSerializer(serializers.ModelSerializer):
-
-#     # customer = serializers.PrimaryKeyRelatedField(read_only=True)
-
-#     class Meta:
-#         model = Queue
-#         fields = ['id', 'service', 'customer']
-#         # depth = 1
-
-#     # def get_customer(self):
-#     #     return self.context['customer']
-
-
-# class QueueSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Queue
-#         fields = ['id', 'service', 'placed_at']
-#         depth = 1
-
-
-# class ServiceQueueSerializer(serializers.ModelSerializer):
-#     # customer = CustomerSerializer()
-#     class Meta:
-#         model = Queue
-#         fields = ['id', 'customer', 'queue_status', 'placed_at']
-#         depth = 1
-
-# class CustomFormSerializer(serializers.ModelSerializer):
-#     column = serializers.HyperlinkedIdentityField(many=True, view_name='formColumns-detail', read_only=True)
-#     class Meta:
-#         model = CustomForm
-#         fields = ['id', 'name', 'service', 'column']
-
-
-# class FormColumnSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = FormColumn
-#         fields = ['id', 'form', 'name',]
-
-# class FormDataSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = FormData
-#         fields = ['id', 'form', 'data',]
-
 class CourseCreateSerializer(serializers.ModelSerializer):
 
     # author = serializers.CharField(read_only=True)
@@ -120,6 +72,11 @@ class CourseSerializer(serializers.ModelSerializer):
 
     lectures = LectureSerializer(many=True)
 
+    author = serializers.SerializerMethodField()
+
+    def get_author(self, obj):
+        return obj.author.__str__()
+
     class Meta:
         model = Course
         fields = ['id', 'title', 'author', 'price',
@@ -142,7 +99,15 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 
 class ListCourseSerializer(serializers.ModelSerializer):
+
+    author = serializers.SerializerMethodField()
+
+    def get_author(self, obj):
+        return obj.author.__str__()
+
     class Meta:
+
         model = Course
-        fields = ['id', 'title', 'author', 'price']
+        fields = ['id', 'title', 'author', 'price',
+                  'lectures', 'coverImg', 'duration']
         depth = 1

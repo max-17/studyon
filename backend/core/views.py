@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework_extensions.mixins import NestedViewSetMixin
-# from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, ListModelMixin
+from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
 from rest_framework.permissions import IsAuthenticated
 from core.permissions import IsAuthor, IsStudent
 from rest_framework.decorators import action
@@ -73,16 +73,15 @@ class LectureViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Lecture.objects.all()
 
-
-# adding course__author__user filter to nestedViewSetMixen's method filter_queryset_by_parents_lookups
-
+    # adding course__author__user filter to nestedViewSetMixen's method filter_queryset_by_parents_lookups
 
     def filter_queryset_by_parents_lookups(self, queryset):
         # parents_query_lookups
         parents_query_dict = self.get_parents_query_dict()
         if parents_query_dict:
+
             try:
-                return queryset.filter(**parents_query_dict, course__author__user=self.request.user.id)
+                return queryset.filter(**parents_query_dict, course__author__user=self.request.user.id) if self.request.user.is_Author else queryset.filter(**parents_query_dict)
             except ValueError:
                 raise Http404
         else:
@@ -107,3 +106,16 @@ class LectureViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class CoursePublicViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, GenericViewSet):
+
+    serializer_class = ListCourseSerializer
+
+    queryset = Course.objects.all()
+
+
+class LectureListRetrieveAPIView(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, GenericViewSet):
+
+    serializer_class = LectureSerializer
+    queryset = Lecture.objects.all()
