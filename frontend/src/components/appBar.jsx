@@ -1,5 +1,5 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import { Container } from '@mui/material';
+import { Avatar, Container, Tooltip } from '@mui/material';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -11,14 +11,17 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import * as React from 'react';
 
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
+import { useContext, useEffect, useState } from 'react';
+import AuthContext from 'context/authContext';
+
 // import logo from './images/logo-study-on.png';
+import axios from '../axios';
 
 const drawerWidth = 240;
 const navItems = ['Home', 'All Courses', 'Contact', 'Sign Up'];
@@ -35,7 +38,25 @@ const LinkButton = (props) => {
 
 function DrawerAppBar(props) {
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [user, setUser] = useState();
+  const [errMsg, setErrMsg] = useState();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('auth/users/me/', {
+          headers: { Authorization: `JWT ${localStorage.getItem('accessToken')}` },
+        });
+        setUser({ ...response.data });
+        console.log(user);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  }, []);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -76,7 +97,9 @@ function DrawerAppBar(props) {
             >
               <MenuIcon />
             </IconButton>
-            <img src='images/logo-study-on.png' height={40} pl={4} sx={{ display: { xs: 'none', sm: 'block' } }} />
+            <LinkButton to='/'>
+              <img src='images/logo-study-on.png' height={40} pl={4} sx={{ display: { xs: 'none', sm: 'block' } }} />
+            </LinkButton>
 
             <Box
               sx={{
@@ -90,14 +113,26 @@ function DrawerAppBar(props) {
               <LinkButton sx={{ fontSize: 18 }} to='courses' color='inherit'>
                 All courses
               </LinkButton>
-              <LinkButton sx={{ fontSize: 18 }} to='Contact' color='inherit'>
-                Contact
-              </LinkButton>
-              <LinkButton sx={{ fontSize: 18 }} variant='outlined' to='/signup' color='primary'>
-                <Typography variant='body1' sx={{ color: 'black' }}>
-                  Sign Up
-                </Typography>
-              </LinkButton>
+              {!localStorage.getItem('accessToken') && (
+                <>
+                  <LinkButton sx={{ fontSize: 18 }} to='Contact' color='inherit'>
+                    Contact
+                  </LinkButton>
+                  <LinkButton sx={{ fontSize: 18 }} variant='outlined' to='/signup' color='primary'>
+                    <Typography variant='body1' sx={{ color: 'black' }}>
+                      Sign Up
+                    </Typography>
+                  </LinkButton>
+                  <LinkButton sx={{ fontSize: 18 }} to='signin' color='inherit'>
+                    Sign in
+                  </LinkButton>
+                </>
+              )}
+              {localStorage.getItem('accessToken') && (
+                <IconButton onClick={() => navigate(user.isAuthor ? 'author' : 'student')} sx={{ p: 0 }}>
+                  <Avatar src='/static/images/avatar/2.jpg' />
+                </IconButton>
+              )}
             </Box>
           </Toolbar>
         </Container>

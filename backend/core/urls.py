@@ -4,7 +4,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework.routers import DefaultRouter
 from rest_framework_extensions.routers import ExtendedSimpleRouter
 
-from .views import AuthorRetrieveUpdateAPIView, StudentRetrieveUpdateAPIView, CourseViewSet, CoursePublicViewSet, LectureViewSet, LectureListRetrieveAPIView
+from .views import AuthorRetrieveUpdateAPIView, StudentRetrieveUpdateAPIView, CourseViewSet, CoursePublicViewSet, LectureViewSet, LectureListRetrieveAPIView, CourseListRetriveViewSet, LectureListRetrieveAPIView
 
 router = ExtendedSimpleRouter()
 (
@@ -14,11 +14,9 @@ router = ExtendedSimpleRouter()
               basename='courses-lecture',
               parents_query_lookups=['course']),
 )
-router.register(r'courses', CoursePublicViewSet, basename='course').register(r'lectures',
-                                                                             LectureListRetrieveAPIView,
-                                                                             basename='courses-lecture',
-                                                                             parents_query_lookups=['course'])
-
+router.register(r'student/courses', CourseListRetriveViewSet, basename='course').register(r'lectures',        LectureListRetrieveAPIView,
+                                                                                          basename='courses-lecture',                                                                                          parents_query_lookups=['course']),
+router.register(r'courses', CoursePublicViewSet, basename='course')
 
 urlpatterns = [
     # path('user/', UserCreateAPIView.as_view()),

@@ -13,8 +13,9 @@ import Container from '@mui/material/Container';
 
 import { useNavigate, Link } from 'react-router-dom';
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from '../axios';
+import AuthContext from 'context/authContext';
 const LOGIN_URL = '/auth/jwt/create';
 
 function Copyright(props) {
@@ -31,6 +32,7 @@ function Copyright(props) {
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const { user, setUser } = useContext(AuthContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -48,11 +50,13 @@ export default function SignIn() {
       const accessToken = response.data.access;
       localStorage.setItem('accessToken', accessToken);
 
-      const user = await axios('auth/users/me/', {
+      const userRes = await axios('auth/users/me/', {
         headers: { Authorization: `JWT ${localStorage.getItem('accessToken')}` },
       });
-      console.log(user);
-      const account = user.data.isAuthor ? '/author' : '/student';
+
+      console.log(userRes.data);
+      // setUser({ ...userRes.data });
+      const account = userRes.data.isAuthor ? '/author' : userRes.data ? '/student' : '/';
       navigate(account, { replace: true });
     } catch (err) {
       console.log('signin error');

@@ -5,6 +5,7 @@ import { fetchData } from '../../utils';
 import axios from '../../../axios';
 import { useNavigate } from 'react-router-dom';
 import { CourseCard } from 'components/course/courseCard';
+import CourseForm from './components/courseForm';
 
 const AuthorCourseList = () => {
   const navigate = useNavigate();
@@ -22,10 +23,7 @@ const AuthorCourseList = () => {
 
   return (
     <>
-      <TextField placeholder='New Course Title' inputRef={newCourseRef} variant='standard' sx={{ width: '100%' }} />
-      <Button onClick={handleSubmit} variant='contained' startIcon={<Add />}>
-        Add Course
-      </Button>
+      <CourseForm />
       <Container maxWidth='full'>
         <Grid container spacing={2}>
           {Object.values(data).map((course, index) => {

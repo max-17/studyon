@@ -39,7 +39,9 @@ class StudentRetrieveUpdateAPIView(RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated]
 
 
-class CourseViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
+class CourseViewSet(NestedViewSetMixin, ModelViewSet):
+
+    permission_classes = [IsAuthor]
 
     serializer_class = CourseSerializer
 
@@ -52,8 +54,8 @@ class CourseViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
             **request.data,
             'author': Author.objects.get(user=request.user).id,
         }
-        # print(80*'*')
-        # print(data)
+        print(80*'*')
+        print(self.request.data)
         serializer = CourseCreateSerializer(data=data)
 
         serializer.is_valid(raise_exception=True)
@@ -67,10 +69,10 @@ class CourseViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class LectureViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
+class LectureViewSet(NestedViewSetMixin, ModelViewSet):
 
     serializer_class = LectureSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthor]
     queryset = Lecture.objects.all()
 
     # adding course__author__user filter to nestedViewSetMixen's method filter_queryset_by_parents_lookups
@@ -93,13 +95,10 @@ class LectureViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
             **request.data,
             'course': kwargs['parent_lookup_course'],
         }
-        print(80*'*')
-        print(data)
+
         serializer = LectureCreateSerializer(data=data)
 
         serializer.is_valid(raise_exception=True)
-        # print(80*'*')
-        # print(serializer.validated_data)
 
         serializer.save()
 
@@ -108,14 +107,26 @@ class LectureViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class CoursePublicViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, GenericViewSet):
+class CoursePublicViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
 
     serializer_class = ListCourseSerializer
 
     queryset = Course.objects.all()
 
 
+class CourseListRetriveViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
+
+    serializer_class = ListCourseSerializer
+
+    permission_classes = [IsStudent]
+
+    def get_queryset(self):
+        student = Student.objects.get(user=self.request.user)
+        return Course.objects.filter(students__in=[student])
+
+
 class LectureListRetrieveAPIView(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, GenericViewSet):
 
+    permission_classes = [IsStudent]
     serializer_class = LectureSerializer
     queryset = Lecture.objects.all()

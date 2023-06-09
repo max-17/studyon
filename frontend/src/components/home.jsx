@@ -1,21 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
 import Grid from '@mui/material/Unstable_Grid2';
-import {
-  Button,
-  TextField,
-  ButtonGroup,
-  Container,
-  Fab,
-  Typography,
-  OutlinedInput,
-  InputAdornment,
-  IconButton,
-} from '@mui/material';
+import { Button, ButtonGroup, Container, Fab, Typography, OutlinedInput, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-import { ScrollTop, fetchData } from './utils';
+import { LinkButton, ScrollTop, fetchData } from './utils';
 import { CourseCard } from './course/courseCard';
 
 import Footer from './footer';
@@ -52,9 +42,9 @@ const Home = (props) => {
           <Typography variant='body1' py={3} px={1} color='grey'>
             It has survived not only five centuries but also the leap into electronic typesetting.
           </Typography>
-          <Button variant='contained' size='large'>
+          <LinkButton to='signup' variant='contained' size='large'>
             Start A Course
-          </Button>
+          </LinkButton>
         </Grid>
         <Grid item xs={5} md={0}>
           <img src='./images/shape-9.png' width='100%' />
@@ -120,46 +110,3 @@ const Home = (props) => {
   );
 };
 export default Home;
-
-const courses = [
-  {
-    author: 'Jason Willams',
-    title: 'Data Science and Machine Learning with Python -Hands On!',
-    image: 'images/courses-01.jpg',
-    authorIcon: 'images/author-01.jpg',
-    rating: 4,
-    price: '$299.00',
-    duration: '08 hr 15 mins',
-    lectures: 14,
-  },
-  {
-    author: 'Pamella Foster',
-    title: 'Create Amazing Color Schemes for Your UX Design Projects',
-    image: 'images/courses-02.jpg',
-    authorIcon: 'images/author-02.jpg',
-    rating: 5,
-    price: '$229.00',
-    duration: '08 hr 15 mins',
-    lectures: 14,
-  },
-  {
-    author: 'Rose Simmons',
-    title: 'Culture & Leadership: Strategies for a Successful Business',
-    image: 'images/courses-03.jpg',
-    authorIcon: 'images/author-03.jpg',
-    rating: 3,
-    price: 'Free',
-    duration: '08 hr 15 mins',
-    lectures: 14,
-  },
-  {
-    author: 'Anna Maria',
-    title: 'Finance Series: Learn to Budget and Calculate your Net Worth.',
-    image: 'images/courses-04.jpg',
-    authorIcon: 'images/author-04.jpg',
-    rating: 4,
-    price: '$136.00',
-    duration: '08 hr 15 mins',
-    lectures: 14,
-  },
-];

@@ -73,30 +73,6 @@ class User(AbstractUser):
             Student.objects.create(user=self)
 
 
-class Student(models.Model):
-
-    first_name = models.CharField(max_length=50, blank=True)
-    last_name = models.CharField(max_length=50, blank=True)
-    phone = models.CharField(max_length=255, blank=True)
-    birth_date = models.DateField(null=True, blank=True)
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, unique=True)
-
-    def __str__(self):
-        return f'{self.first_name} {self.last_name}'
-
-    # @admin.display(ordering='user__first_name')
-    # def first_name(self):
-    #     return self.user.first_name
-
-    # @admin.display(ordering='user__last_name')
-    # def last_name(self):
-    #     return self.user.last_name
-
-    class Meta:
-        ordering = ['user__first_name', 'user__last_name']
-
-
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     last_name = models.CharField(max_length=255, blank=True)
@@ -121,6 +97,32 @@ class Course(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Student(models.Model):
+
+    first_name = models.CharField(max_length=50, blank=True)
+    last_name = models.CharField(max_length=50, blank=True)
+    phone = models.CharField(max_length=255, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, unique=True)
+
+    courses = models.ManyToManyField(Course, related_name='students')
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
+
+    # @admin.display(ordering='user__first_name')
+    # def first_name(self):
+    #     return self.user.first_name
+
+    # @admin.display(ordering='user__last_name')
+    # def last_name(self):
+    #     return self.user.last_name
+
+    class Meta:
+        ordering = ['user__first_name', 'user__last_name']
 
 
 class Lecture(models.Model):

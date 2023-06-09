@@ -8,15 +8,17 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
-import axios from '../axios';
+import axios, { axiosPrivate } from '../axios';
 
 import { Box, Button, Container, Grid, Paper } from '@mui/material';
 import { ImageAspectRatioRounded } from '@mui/icons-material';
 import theme from './theme';
 import { Chart } from './lineChart';
+import useAxiosPrivate from 'hooks/useAxiosPrivate';
 
 const AuthorAccount = () => {
   const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
 
   const [editing, setEditing] = useState(false);
   const [data, setData] = useState(null);
@@ -28,7 +30,7 @@ const AuthorAccount = () => {
   const fetchData = async () => {
     // You can await here
     try {
-      const response = await axios.get('author/');
+      const response = await axiosPrivate.get('author/');
       setData(() => ({ ...response.data }));
     } catch (error) {
       console.log(error);

@@ -11,6 +11,7 @@ import {
   Rating,
   Typography,
   Box,
+  LinearProgress,
 } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +25,18 @@ const CardActionArea = (props) => {
   return <DefaultCardActionArea {...props} onClick={() => navigate(props.link)}></DefaultCardActionArea>;
 };
 
-export const CourseCard = ({ id, image, author, authorIcon, title, rating, price, duration, lectures }) => {
+export const CourseCard = ({
+  id,
+  image,
+  author,
+  authorIcon,
+  title,
+  rating,
+  price,
+  duration,
+  lectures,
+  student = false,
+}) => {
   const navigate = useNavigate();
   return (
     <Card
@@ -62,22 +74,36 @@ export const CourseCard = ({ id, image, author, authorIcon, title, rating, price
           </Grid>
         </Grid>
 
-        <Grid
-          container
-          alignItems='center'
-          alignContent='center'
-          justifyContent='space-between'
-          sx={{ background: primary.light, borderRadius: 2, padding: 1.5 }}
-        >
-          <Typography component='legend' variant='h6' color='primary' fontWeight='bold'>
-            {`${price} KRW`}
-          </Typography>
-
+        {student ? (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            {rating}
-            <Rating size='small' value={rating} readOnly />
+            <Typography variant='body1' m={1}>
+              Progress
+            </Typography>
+            <Box sx={{ width: '100%', mr: 1 }}>
+              <LinearProgress variant='determinate' value={0} />
+            </Box>
+            <Box sx={{ minWidth: 35 }}>
+              <Typography variant='body2' color='text.secondary'>{`${Math.round(0)}%`}</Typography>
+            </Box>
           </Box>
-        </Grid>
+        ) : (
+          <Grid
+            container
+            alignItems='center'
+            alignContent='center'
+            justifyContent='space-between'
+            sx={{ background: primary.light, borderRadius: 2, padding: 1.5 }}
+          >
+            <Typography component='legend' variant='h6' color='primary' fontWeight='bold'>
+              {`${price} KRW`}
+            </Typography>
+
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              {rating}
+              <Rating size='small' value={rating} readOnly />
+            </Box>
+          </Grid>
+        )}
       </CardContent>
     </Card>
   );

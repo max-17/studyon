@@ -44,11 +44,19 @@ export const LinkButton = (props) => {
 export const fetchData = async (link, setState) => {
   // You can await here
   try {
-    const response = await axios.get(link, {
-      headers: { Authorization: `JWT ${localStorage.getItem('accessToken')}` },
-    });
+    const response = await axios.get(
+      link,
+      localStorage.getItem('accessToken')
+        ? {
+            headers: { Authorization: `JWT ${localStorage.getItem('accessToken')}` },
+          }
+        : {}
+    );
     setState(() => ({ ...response.data }));
   } catch (error) {
-    console.log(error);
+    console.log(error.response.status);
+    if (error.response.status == 401) {
+      localStorage.removeItem('accessToken');
+    }
   }
 };

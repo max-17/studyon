@@ -13,24 +13,55 @@ import PageNotFound from 'components/404-page';
 
 import { Routes, Route } from 'react-router-dom';
 
-import Course from './components/course/about_course';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { AuthProvider } from 'context/authContext';
+import StudentAccount from './components/student/account';
 
 function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <ResponsiveAppBar />
-      <Routes>
-        <Route path='/' element={<Home />}></Route>
-        <Route path='signin' element={<SignIn />}></Route>
-        <Route path='signup' element={<SignUp />}></Route>
-        <Route path='author/courses/:courseId' element={<AuthorLectureList />} />
-        <Route path='author/courses/:courseId/*' element={<PageNotFound />} />
+  // const axiosPrivate = useAxiosPrivate();
 
-        <Route path='author/*' element={<AuthorAccount />} />
-        <Route path='*' element={<PageNotFound />} />
-      </Routes>
-    </ThemeProvider>
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   const controller = new AbortController();
+
+  //   const getUser = async () => {
+  //     try {
+  //       const response = await axiosPrivate.get('/auth/users/me/', {
+  //         signal: controller.signal,
+  //       });
+  //       console.log(response.data);
+  //       isMounted && setUser(response.data);
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
+
+  //   getUser();
+
+  //   return () => {
+  //     isMounted = false;
+  //     controller.abort();
+  //   };
+  // }, []);
+
+  return (
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <ResponsiveAppBar />
+        <Routes>
+          <Route path='/' element={<Home />}></Route>
+          <Route path='signin' element={<SignIn />}></Route>
+          <Route path='signup' element={<SignUp />}></Route>
+          <Route path='author/courses/:courseId' element={<AuthorLectureList />} />
+          {/* <Route path='student/:courseId' element={<Student />} /> */}
+
+          <Route path='author/*' element={<AuthorAccount />} />
+          <Route path='student/*' element={<StudentAccount />} />
+          <Route path='*' element={<PageNotFound />} />
+        </Routes>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 
