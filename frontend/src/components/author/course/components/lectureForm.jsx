@@ -9,17 +9,17 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { useEffect, useState } from 'react';
-// import { axiosPrivate } from '../../../../axios';
+import { axiosPrivate } from '../../../../axios';
 import { Modal } from '@mui/material';
-import axios from '../../../../axios';
+import { useParams } from 'react-router-dom';
 
-const COURSE_URL = '/author/courses/';
+export default function LectureForm() {
+  let { courseId } = useParams();
 
-export default function CourseForm() {
+  const LECTURE_URL = `/author/courses/${courseId}/lectures/`;
   const [title, setTitle] = useState('');
-  const [duration, setDuration] = useState('');
-  const [price, setPrice] = useState('');
-  const [coverImg, setCoverImg] = useState();
+  const [video, setVideo] = useState('');
+  const [text, setText] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [success, setSuccess] = useState(false);
   const [open, setOpen] = useState(false);
@@ -29,23 +29,20 @@ export default function CourseForm() {
 
   useEffect(() => {
     setErrMsg('');
-  }, [title, duration, price, coverImg]);
+  }, [title, video, text]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const data = { title, duration, price: parseInt(price), coverImg };
+      const data = { title, text, video };
       console.log(data);
 
-      const response = await axios.post(COURSE_URL, data, {
-        headers: { Authorization: `JWT ${localStorage.getItem('accessToken')}` },
-      });
+      const response = await axiosPrivate.post(LECTURE_URL, data);
 
       setTitle('');
-      setDuration('');
-      setPrice('');
-      setCoverImg('');
+      setVideo('');
+      setText('');
       setOpen(false);
       console.log(response.data);
     } catch (err) {
@@ -63,7 +60,7 @@ export default function CourseForm() {
   return (
     <>
       <Button variant='contained' sx={{ margin: 2 }} onClick={handleOpen}>
-        Add New Coruse
+        Add New Lecture
       </Button>
       <Modal
         open={open}
@@ -102,36 +99,15 @@ export default function CourseForm() {
                     value={title}
                   />
                 </Grid>
+
                 <Grid item xs={12}>
                   <TextField
                     required
-                    fullWidth
-                    name='duration'
-                    label='Duration'
-                    id='duration'
-                    onChange={(e) => setDuration(e.target.value)}
-                    value={duration}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name='price'
-                    label='Price'
-                    id='price'
-                    onChange={(e) => setPrice(e.target.value)}
-                    value={price}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    name='coverImg'
+                    name='video'
                     type='file'
-                    label='Cover Image'
+                    label='Video'
                     id='coverImg'
-                    onChange={(e) => setCoverImg(e.target.files[0])}
+                    onChange={(e) => setVideo(e.target.files[0])}
                     focused
                   />
                 </Grid>

@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import LectureForm from './components/lectureForm';
 
 const AuthorLectureList = () => {
   const navigate = useNavigate();
@@ -38,11 +39,14 @@ const AuthorLectureList = () => {
               bgcolor: 'background.paper',
               overflow: 'auto',
               maxHeight: '80vh',
+              margin: 1,
             }}
           >
             <Typography component='div' variant='h6' textAlign='center' px={2} id='list-subheader'>
               Course Title
             </Typography>
+
+            <LectureForm />
             {data &&
               data.lectures.map((lecture, index) => (
                 <ListItem

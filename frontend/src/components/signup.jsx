@@ -13,20 +13,9 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from '../axios';
+import { Copyright } from './utils';
 
 const SIGNUP_URL = '/auth/users/';
-
-function Copyright(props) {
-  return (
-    <Typography variant='body2' color='text.secondary' align='center' {...props}>
-      {'Copyright © '}
-      <Link color='inherit' href='/'>
-        STUDY-ON
-      </Link>{' '}
-      {new Date().getFullYear()}.
-    </Typography>
-  );
-}
 
 export default function SignUp() {
   // const errRef = useRef();

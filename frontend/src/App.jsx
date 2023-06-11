@@ -16,43 +16,19 @@ import { Routes, Route } from 'react-router-dom';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { AuthProvider } from 'context/authContext';
 import StudentAccount from './components/student/account';
+import ContactForm from 'components/contactForm';
 
 function App() {
-  // const axiosPrivate = useAxiosPrivate();
-
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   const controller = new AbortController();
-
-  //   const getUser = async () => {
-  //     try {
-  //       const response = await axiosPrivate.get('/auth/users/me/', {
-  //         signal: controller.signal,
-  //       });
-  //       console.log(response.data);
-  //       isMounted && setUser(response.data);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   };
-
-  //   getUser();
-
-  //   return () => {
-  //     isMounted = false;
-  //     controller.abort();
-  //   };
-  // }, []);
-
   return (
     <AuthProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ResponsiveAppBar />
         <Routes>
-          <Route path='/' element={<Home />}></Route>
-          <Route path='signin' element={<SignIn />}></Route>
-          <Route path='signup' element={<SignUp />}></Route>
+          <Route path='/' element={<Home />} />
+          <Route path='signin' element={<SignIn />} />
+          <Route path='signup' element={<SignUp />} />
+          <Route path='contact' element={<ContactForm />} />
           <Route path='author/courses/:courseId' element={<AuthorLectureList />} />
           {/* <Route path='student/:courseId' element={<Student />} /> */}
 

@@ -1,7 +1,6 @@
-import { Box, Button, Fade, useScrollTrigger } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Box, Button, Fade, useScrollTrigger, Typography } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from '../axios';
-
 export function ScrollTop(props) {
   const { children } = props;
   // Note that you normally won't need to set the window ref as useScrollTrigger
@@ -60,3 +59,15 @@ export const fetchData = async (link, setState) => {
     }
   }
 };
+
+export function Copyright(props) {
+  return (
+    <Typography variant='body2' color='text.secondary' align='center' {...props}>
+      {'Copyright © '}
+      <Link color='inherit' href='/'>
+        STUDY-ON
+      </Link>{' '}
+      {new Date().getFullYear()}.
+    </Typography>
+  );
+}

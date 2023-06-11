@@ -58,6 +58,7 @@ export default function SignIn() {
       // setUser({ ...userRes.data });
       const account = userRes.data.isAuthor ? '/author' : userRes.data ? '/student' : '/';
       navigate(account, { replace: true });
+      setUser(userRes.data);
     } catch (err) {
       console.log('signin error');
       console.log(err);

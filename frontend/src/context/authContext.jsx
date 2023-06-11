@@ -5,7 +5,7 @@ import axios from '../axios';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState();
+  const [auth, setAuth] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
     // console.log({ auth: auth });
   }, []);
 
-  return <AuthContext.Provider value={{ auth, setAuth }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user: auth, setUser: setAuth }}>{children}</AuthContext.Provider>;
 };
 
 export default AuthContext;

@@ -66,6 +66,7 @@ class LectureCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lecture
         fields = ['id', 'title', 'course', 'video', 'text']
+        fields = ['id', 'title', 'course', 'text']
 
 
 class CourseSerializer(serializers.ModelSerializer):
