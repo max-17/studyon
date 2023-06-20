@@ -35,8 +35,10 @@ export default function LectureForm() {
     e.preventDefault();
 
     try {
-      const data = { title, text, video };
-      console.log(data);
+      const data = new FormData();
+      data.append('title', title);
+      data.append('text', text);
+      data.append('video', video);
 
       const response = await axiosPrivate.post(LECTURE_URL, data);
 
@@ -106,7 +108,7 @@ export default function LectureForm() {
                     name='video'
                     type='file'
                     label='Video'
-                    id='coverImg'
+                    id='video'
                     onChange={(e) => setVideo(e.target.files[0])}
                     focused
                   />

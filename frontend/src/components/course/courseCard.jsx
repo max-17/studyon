@@ -36,6 +36,9 @@ export const CourseCard = ({
   duration,
   lectures,
   student = false,
+  handleClick = () => {
+    return undefined;
+  },
 }) => {
   const navigate = useNavigate();
   return (
@@ -45,7 +48,13 @@ export const CourseCard = ({
       sx={{ borderRadius: '1rem', borderColor: primary.line, maxWidth: 450, margin: 'auto' }}
     >
       <CardActionArea link={`${id}`}>
-        <CardMedia component='img' height='194' image={image} sx={{ borderRadius: '1.5rem', padding: '.7rem' }} />
+        <CardMedia
+          component='img'
+          onClick={handleClick}
+          height='194'
+          image={image}
+          sx={{ borderRadius: '1.5rem', padding: '.7rem' }}
+        />
       </CardActionArea>
 
       <CardContent sx={{ padding: '0.7rem' }}>

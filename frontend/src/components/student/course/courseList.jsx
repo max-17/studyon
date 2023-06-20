@@ -1,15 +1,8 @@
-import { Add } from '@mui/icons-material';
-import { Button, TextField, Grid, Container } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
-import { fetchData } from '../../utils';
-import axios from '../../../axios';
-import { useNavigate } from 'react-router-dom';
+import { Grid, Container } from '@mui/material';
+
 import { CourseCard } from 'components/course/courseCard';
-import CourseForm from './components/courseForm';
 
-const CourseList = (courses) => {
-  const navigate = useNavigate();
-
+const CourseList = () => {
   return (
     <>
       <Container maxWidth='full'>

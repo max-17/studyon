@@ -3,6 +3,7 @@ from .models import *
 from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer, UserSerializer as BaseUserSerializer
 
 from rest_framework import serializers, viewsets, status
+from .models import Course, Lecture
 
 
 class SignInSerializer(serializers.Serializer):
@@ -31,7 +32,7 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = ['id', 'user_id', 'phone',
-                  'birth_date', 'first_name', 'last_name', 'user_email']
+                  'birth_date', 'first_name', 'last_name', 'user_email', 'courses']
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -47,11 +48,21 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 class CourseCreateSerializer(serializers.ModelSerializer):
 
-    # author = serializers.CharField(read_only=True)
+    def validate(self, data):
+        author = self.context['author']
+
+        # my code
+        return data
+
+    def create(self, validated_data):
+        author = self.context['author']
+        validated_data['author'] = author
+        course = Course.objects.create(**validated_data)
+        return course
 
     class Meta:
         model = Course
-        fields = ['id', 'title', 'price', 'author', 'duration']
+        fields = ['id', 'title', 'price', 'coverImg', 'duration']
 
 
 class LectureSerializer(serializers.ModelSerializer):
@@ -63,10 +74,21 @@ class LectureSerializer(serializers.ModelSerializer):
 
 class LectureCreateSerializer(serializers.ModelSerializer):
 
+    def validate(self, data):
+        course = self.context['course']
+
+        # my code
+        return data
+
+    def create(self, validated_data):
+        course = self.context['course']
+        validated_data['course'] = course
+        lecture = Lecture.objects.create(**validated_data)
+        return lecture
+
     class Meta:
         model = Lecture
-        fields = ['id', 'title', 'course', 'video', 'text']
-        fields = ['id', 'title', 'course', 'text']
+        fields = ['id', 'title',  'video', 'text']
 
 
 class CourseSerializer(serializers.ModelSerializer):

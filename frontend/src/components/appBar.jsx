@@ -19,8 +19,8 @@ import { PropTypes } from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import AuthContext from 'context/authContext';
 
-// import logo from './images/logo-study-on.png';
-import axios from '../axios';
+//import logo-study-on from './images/logo.png';
+import logo from 'logo.png';
 
 const drawerWidth = 240;
 const navItems = [
@@ -104,7 +104,7 @@ function DrawerAppBar(props) {
               <MenuIcon />
             </IconButton>
             <LinkButton to='/'>
-              <img src='images/logo-study-on.png' height={40} pl={4} sx={{ display: { xs: 'none', sm: 'block' } }} />
+              <img src={logo} height={40} pl={4} sx={{ display: { xs: 'none', sm: 'block' } }} />
             </LinkButton>
 
             <Box
@@ -142,26 +142,29 @@ function DrawerAppBar(props) {
                 </>
               )}
               {user.id && (
-                <IconButton
-                  onClick={() => {
-                    navigate(user.isAuthor ? 'author' : 'student');
-                  }}
-                  sx={{ p: 0 }}
-                >
-                  <Avatar src='/static/images/avatar/2.jpg' />
-                </IconButton>
+                <>
+                  <IconButton
+                    onClick={() => {
+                      navigate(user.isAuthor ? 'author' : 'student');
+                    }}
+                    sx={{ p: 0 }}
+                  >
+                    <Avatar src='/static/images/avatar/2.jpg' />
+                  </IconButton>
+                  <Button
+                    sx={{ fontSize: 18 }}
+                    color='inherit'
+                    onClick={() => {
+                      localStorage.removeItem('accessToken');
+                      console.log(localStorage);
+                      setUser(false);
+                      navigate('/');
+                    }}
+                  >
+                    sign out
+                  </Button>
+                </>
               )}
-              {/* <LinkButton
-                sx={{ fontSize: 18 }}
-                color='inherit'
-                onClick={() => {
-                  localStorage.removeItem('accessToken');
-                  setUser(false);
-                  navigate('home');
-                }}
-              >
-                sign out
-              </LinkButton> */}
             </Box>
           </Toolbar>
         </Container>

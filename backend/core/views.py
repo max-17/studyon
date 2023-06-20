@@ -43,30 +43,21 @@ class CourseViewSet(NestedViewSetMixin, ModelViewSet):
 
     permission_classes = [IsAuthor]
 
-    serializer_class = CourseSerializer
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return CourseCreateSerializer
+        return CourseSerializer
+
+    def get_serializer_context(self):
+        context = super(CourseViewSet, self).get_serializer_context()
+
+        if self.request.method == 'POST':
+            context.update(
+                {'author': Author.objects.get(user=self.request.user)})
+        return context
 
     def get_queryset(self):
         return Course.objects.filter(author__user=self.request.user)
-
-    def create(self, request, *args, **kwargs):
-
-        data = {
-            **request.data,
-            'author': Author.objects.get(user=request.user).id,
-        }
-        print(80*'*')
-        print(self.request.data)
-        serializer = CourseCreateSerializer(data=data)
-
-        serializer.is_valid(raise_exception=True)
-        # print(80*'*')
-        # print(serializer.validated_data)
-
-        serializer.save()
-
-        headers = self.get_success_headers(serializer.data)
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class LectureViewSet(NestedViewSetMixin, ModelViewSet):
@@ -74,6 +65,18 @@ class LectureViewSet(NestedViewSetMixin, ModelViewSet):
     serializer_class = LectureSerializer
     permission_classes = [IsAuthor]
     queryset = Lecture.objects.all()
+
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return LectureCreateSerializer
+        return LectureSerializer
+
+    def get_serializer_context(self, *args, **kwargs):
+        context = super(LectureViewSet, self).get_serializer_context()
+
+        if self.request.method == 'POST':
+            context.update({'course': Course.objects.get(id=self.get_parents_query_dict()['course'])})
+        return context
 
     # adding course__author__user filter to nestedViewSetMixen's method filter_queryset_by_parents_lookups
 
@@ -83,28 +86,28 @@ class LectureViewSet(NestedViewSetMixin, ModelViewSet):
         if parents_query_dict:
 
             try:
-                return queryset.filter(**parents_query_dict, course__author__user=self.request.user.id) if self.request.user.is_Author else queryset.filter(**parents_query_dict)
+                return queryset.filter(**parents_query_dict, course__author__user=self.request.user.id) if self.request.user.isAuthor else queryset.filter(**parents_query_dict)
             except ValueError:
                 raise Http404
         else:
             return queryset
 
-    def create(self, request, *args, **kwargs):
+    # def create(self, request, *args, **kwargs):
 
-        data = {
-            **request.data,
-            'course': kwargs['parent_lookup_course'],
-        }
+    #     data = {
+    #         **request.data,
+    #         'course': kwargs['parent_lookup_course'],
+    #     }
 
-        serializer = LectureCreateSerializer(data=data)
+    #     serializer = LectureCreateSerializer(data=data)
 
-        serializer.is_valid(raise_exception=True)
+    #     serializer.is_valid(raise_exception=True)
 
-        serializer.save()
+    #     serializer.save()
 
-        headers = self.get_success_headers(serializer.data)
+    #     headers = self.get_success_headers(serializer.data)
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class CoursePublicViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):

@@ -35,8 +35,21 @@ export default function CourseForm() {
     e.preventDefault();
 
     try {
-      const data = { title, duration, price: parseInt(price), coverImg };
-      console.log(data);
+      var data = new FormData();
+
+      data.append('coverImg', coverImg);
+      data.append('title', title);
+      data.append('price', parseInt(price));
+      data.append('duration', duration);
+      data.append('author', 1);
+
+      // processData: false,
+      // contentType: false,
+      // mimeType: 'multipart/form-data',
+      // data: data,
+
+      // const data = { title, duration, price: parseInt(price), coverImg };
+      // console.log(data);
 
       const response = await axios.post(COURSE_URL, data, {
         headers: { Authorization: `JWT ${localStorage.getItem('accessToken')}` },

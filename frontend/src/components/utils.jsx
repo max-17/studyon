@@ -51,7 +51,7 @@ export const fetchData = async (link, setState) => {
           }
         : {}
     );
-    setState(() => ({ ...response.data }));
+    setState(() => response.data);
   } catch (error) {
     console.log(error.response.status);
     if (error.response.status == 401) {

@@ -17,6 +17,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { AuthProvider } from 'context/authContext';
 import StudentAccount from './components/student/account';
 import ContactForm from 'components/contactForm';
+import Courses from 'components/public/courses';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path='signin' element={<SignIn />} />
           <Route path='signup' element={<SignUp />} />
           <Route path='contact' element={<ContactForm />} />
+          <Route path='courses/*' element={<Courses />} />
           <Route path='author/courses/:courseId' element={<AuthorLectureList />} />
           {/* <Route path='student/:courseId' element={<Student />} /> */}
 

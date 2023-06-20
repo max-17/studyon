@@ -94,6 +94,7 @@ class Course(models.Model):
         Author, on_delete=models.CASCADE,  related_name='courses')
     duration = models.CharField(max_length=50)
     coverImg = models.FileField(upload_to=None, max_length=100)
+    description = RichTextField(blank=True)
 
     def __str__(self):
         return self.title
