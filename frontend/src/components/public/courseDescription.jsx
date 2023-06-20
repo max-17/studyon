@@ -1,12 +1,15 @@
 import { Button, Container, Grid, Typography } from '@mui/material';
+import { axiosPrivate } from '../../axios';
 import theme from 'components/theme';
 import { LinkButton } from 'components/utils';
 import AuthContext from 'context/authContext';
-import { useContext, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const CourseDescription = ({ coverImg, title, description, price, duration }) => {
+  const [courses, setCourses] = useState([]);
   const { user, setUser } = useContext(AuthContext);
+  const { courseId } = useParams();
   const navigate = useNavigate();
 
   if (!title) {
@@ -17,12 +20,40 @@ const CourseDescription = ({ coverImg, title, description, price, duration }) =>
     document.getElementById('description').setHTML(description);
   }, [description]);
 
+  useEffect(() => {
+    const getCourses = async () => {
+      try {
+        const data = (await axiosPrivate('/student/')).data.courses;
+
+        console.log(data);
+        setCourses(data);
+      } catch (error) {
+        console.log(error);
+        alert('server error');
+      }
+    };
+    if (user && !user.isAuthor) {
+      getCourses();
+    }
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (user && !user.isAuthor) {
+      console.log();
+      axiosPrivate.patch('/student/', { courses: [...courses, parseInt(courseId)] });
+      navigate('/student', { replace: true });
+    } else {
+      navigate('/signin');
+    }
+  };
+
   return (
     <Container maxWidth='full'>
       {/* hero section */}
       <Grid
         container
-        mX={3}
         justifyContent='space-around'
         alignItems='center'
         sx={{ backgroundColor: theme.palette.primary.light }}
@@ -40,17 +71,7 @@ const CourseDescription = ({ coverImg, title, description, price, duration }) =>
           <Typography variant='body1' py={3} px={1} color='grey'>
             {`${price} KRW`}
           </Typography>
-          <Button
-            onClick={() => {
-              if (user & !user.isAuthor) {
-                console.log('purchased');
-              } else {
-                navigate('/signin');
-              }
-            }}
-            variant='contained'
-            size='large'
-          >
+          <Button onClick={handleSubmit} variant='contained' size='large'>
             Purchase
           </Button>
         </Grid>

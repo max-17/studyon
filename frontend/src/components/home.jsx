@@ -11,6 +11,7 @@ import { CourseCard } from './course/courseCard';
 import Footer from './footer';
 import theme from './theme';
 import { useNavigate } from 'react-router-dom';
+import Courses from './public/courses';
 
 const Home = (props) => {
   const navigate = useNavigate();
@@ -56,43 +57,8 @@ const Home = (props) => {
 
       {/* hero section end */}
 
-      {/* searchbar */}
-
-      <Grid container justifyContent={'center'} mt={2} p={4}>
-        <Grid item sm={6} xs={12}>
-          <Typography variant='h4'>All Courses of Study-On</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} height='100'>
-          <OutlinedInput
-            id='outlined-adornment-weight'
-            sx={{ width: '100%' }}
-            endAdornment={
-              <InputAdornment position='end'>
-                <Button sx={{ background: theme.palette.primary.line, padding: 1 }}>
-                  <SearchIcon />
-                </Button>
-              </InputAdornment>
-            }
-            aria-describedby='outlined-weight-helper-text'
-            inputProps={{
-              'aria-label': 'weight',
-            }}
-          />
-        </Grid>
-      </Grid>
-
-      {/* searchbar end */}
-
       <Grid container spacing={3} style={{ margin: '1rem' }}>
-        {data &&
-          Object.values(data).map((course, index) => {
-            console.log(course);
-            return (
-              <Grid item xs={12} sm={6} lg={4} md={6} key={index}>
-                <CourseCard {...course} lectures={course.lectures.length} image={course.coverImg} />
-              </Grid>
-            );
-          })}
+        <Courses />
       </Grid>
       {/* scroll to top button */}
       <ScrollTop {...props}>
