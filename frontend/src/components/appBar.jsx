@@ -1,5 +1,5 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import { Avatar, Container, Tooltip } from '@mui/material';
+import { Avatar, Container, Menu, MenuItem } from '@mui/material';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -10,26 +10,21 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
+
 import AuthContext from 'context/authContext';
 
 //import logo-study-on from './images/logo.png';
 import logo from 'logo.png';
 
 const drawerWidth = 240;
-const navItems = [
-  { name: 'Home', link: '/' },
-  { name: 'All Courses', link: 'courses' },
-  { name: 'Contact', link: 'contact' },
-  { name: 'Sign Up', link: 'signup' },
-  { name: 'Sign In', link: 'signin' },
-];
 
 const LinkButton = (props) => {
   const navigate = useNavigate();
@@ -43,26 +38,37 @@ const LinkButton = (props) => {
 
 function DrawerAppBar(props) {
   const { window } = props;
-  const [errMsg, setErrMsg] = useState();
+  const [anchorEl, setAnchorEl] = useState(null);
   const { user, setUser } = useContext(AuthContext);
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const navItems = [
+    { name: 'Home', link: '/' },
+    { name: 'All Courses', link: 'courses' },
+    { name: 'Contact', link: 'contact' },
+    { name: 'Sign Up', link: 'signup' },
+    { name: 'Sign In', link: 'signin' },
+  ];
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // const fetchData = async () => {
-    //   try {
-    //     const response = await axios.get('auth/users/me/', {
-    //       headers: { Authorization: `JWT ${localStorage.getItem('accessToken')}` },
-    //     });
-    //     setUser({ ...response.data });
-    //     console.log(user);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-    // fetchData();
-  }, []);
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleAccount = () => {
+    setAnchorEl(null);
+    navigate(user.isAuthor ? 'author' : 'student/account');
+  };
+  const handleSignout = () => {
+    setAnchorEl(null);
+    localStorage.removeItem('accessToken');
+    console.log(localStorage);
+    setUser(false);
+    navigate('/');
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -113,17 +119,17 @@ function DrawerAppBar(props) {
                 margin: 'auto',
               }}
             >
-              {/* {navItems.map((item) => (
-                <LinkButton sx={{ fontSize: 18 }} color='inherit' to={item.link}>
-                  {item.name}
-                </LinkButton>
-              ))} */}
               <LinkButton sx={{ fontSize: 18 }} to='/' color='inherit'>
                 Home
               </LinkButton>
               {!(user & user.isAuthor) && (
                 <LinkButton sx={{ fontSize: 18 }} to='courses' color='inherit'>
                   All courses
+                </LinkButton>
+              )}
+              {user && !user.isAuthor && (
+                <LinkButton sx={{ fontSize: 18 }} to='student/courses' color='inherit'>
+                  My courses
                 </LinkButton>
               )}
               <LinkButton sx={{ fontSize: 18 }} to='contact' color='inherit'>
@@ -141,31 +147,33 @@ function DrawerAppBar(props) {
                   </LinkButton>
                 </>
               )}
-              {user.id && (
-                <>
-                  <IconButton
-                    onClick={() => {
-                      navigate(user.isAuthor ? 'author' : 'student');
-                    }}
-                    sx={{ p: 0 }}
-                  >
-                    <Avatar src='/static/images/avatar/2.jpg' />
-                  </IconButton>
-                  <Button
-                    sx={{ fontSize: 18 }}
-                    color='inherit'
-                    onClick={() => {
-                      localStorage.removeItem('accessToken');
-                      console.log(localStorage);
-                      setUser(false);
-                      navigate('/');
-                    }}
-                  >
-                    sign out
-                  </Button>
-                </>
-              )}
             </Box>
+            {user.id && (
+              <Box sx={{ marginLeft: 'auto' }}>
+                <Menu
+                  id='menu-appbar'
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={handleAccount}>Account</MenuItem>
+                  <MenuItem onClick={handleSignout}>Sign out</MenuItem>
+                </Menu>
+
+                <IconButton onClick={handleMenu} sx={{ p: 0 }}>
+                  <Avatar alt={user.first_name} src={user.avater} />
+                </IconButton>
+              </Box>
+            )}
           </Toolbar>
         </Container>
       </AppBar>

@@ -53,6 +53,7 @@ const Courses = () => {
                       <CourseCard
                         handleClick={() => setCourseIndex(index)}
                         {...course}
+                        id={`/courses/${course.id}`}
                         lectures={course.lectures.length}
                         image={course.coverImg}
                       />
@@ -64,7 +65,6 @@ const Courses = () => {
         }
       />
       {data && <Route path='/:courseId' element={<CourseDescription {...data[courseIndex]} />} />}
-      {/* <Route path='/*' element={<PageNotFound />} /> */}
     </Routes>
   );
 };

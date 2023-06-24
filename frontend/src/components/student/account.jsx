@@ -5,7 +5,7 @@ import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
-import { Container, Grid, IconButton, Input, Box } from '@mui/material';
+import { Container, Grid, IconButton, Input, Box, ListItemText, Typography, TextField, Button } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import theme from '../theme';
@@ -14,6 +14,7 @@ import { LinkButton } from '../utils';
 import PageNotFound from 'components/404-page';
 import { CourseCard } from 'components/course/courseCard';
 import StudentLecureList from './course/lectureList';
+import CourseList from 'components/student/course/courseList';
 
 // const menu = [
 //   { name: 'Students', link: 'students', component: <Students /> },
@@ -27,12 +28,11 @@ const StudentAccount = () => {
 
   const [editing, setEditing] = useState(false);
   const [user, setUser] = useState(null);
-  const [courses, setCourses] = useState({});
 
   const firstNameRef = useRef();
-
   const lastNameRef = useRef();
-  const avatarRef = useRef();
+  const birth_dateRef = useRef();
+  const phoneNumRef = useRef();
 
   useEffect(() => {
     const getUser = async () => {
@@ -50,31 +50,15 @@ const StudentAccount = () => {
       }
     };
     getUser();
-
-    const getCourses = async () => {
-      // You can await here
-      try {
-        const response = await axios.get('student/courses/', {
-          headers: { Authorization: `JWT ${localStorage.getItem('accessToken')}` },
-        });
-        setCourses(() => ({ ...response.data }));
-      } catch (error) {
-        console.log(error);
-        if (error.request.status == 401) {
-          navigate('/signin', { replace: true });
-        }
-      }
-    };
-    getCourses();
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(firstNameRef.current.value);
     const updatedData = {
-      ...user,
       last_name: lastNameRef.current.value,
       first_name: firstNameRef.current.value,
+      birth_date: birth_dateRef.current.value,
+      phone: phoneNumRef.current.value,
     };
     try {
       console.log(updatedData);
@@ -101,30 +85,62 @@ const StudentAccount = () => {
     <Container maxWidth='lg'>
       <Routes>
         <Route
-          path='/'
+          path='/account'
           element={
-            <Grid container spacing={2} mt={2}>
-              {Object.values(courses).map((course, index) => {
-                console.log(course);
-                return (
-                  <Grid item xs={12} sm={6} lg={4} md={6} key={index}>
-                    <CourseCard
-                      {...course}
-                      id={`courses/${course.id}`}
-                      student
-                      lectures={course.lectures.length}
-                      image={course.coverImg}
-                    />
-                  </Grid>
-                );
-              })}
+            <Grid container direction='column' spacing={2} padding={5}>
+              <AccountFormInput
+                name={<Avatar src={user.avatar}>{!user.avatar && `${user.first_name[0]}${user.last_name[0]}`}</Avatar>}
+                value={user.first_name + ' ' + user.last_name}
+              />
+              <AccountFormInput
+                name={<Typography fontWeight={700}>First Name</Typography>}
+                value={<TextField ref={firstNameRef} value={user.first_name} />}
+              />
+              <AccountFormInput
+                name={<Typography fontWeight={700}>Last Name</Typography>}
+                value={<TextField ref={lastNameRef} value={user.last_name} />}
+              />
+              <AccountFormInput
+                name={<Typography fontWeight={700}>Date of Birth</Typography>}
+                value={<TextField ref={birth_dateRef} value={user.birth_date} />}
+              />
+              <AccountFormInput
+                name={<Typography fontWeight={700}>Email</Typography>}
+                value={<TextField value={user.user_email} disabled />}
+              />
+              <AccountFormInput
+                name={<Typography fontWeight={700}>Phone number</Typography>}
+                value={<TextField ref={phoneNumRef} value={user.phone} />}
+              />
+
+              <AccountFormInput
+                value={
+                  <Button onClick={handleSubmit} variant='contained'>
+                    {editing ? 'Sabmit' : 'Edit'}
+                  </Button>
+                }
+              />
             </Grid>
           }
         />
+        <Route path='/courses' element={<CourseList />} />
         <Route path='/courses/:courseId' element={<StudentLecureList />} />
         {/* <Route path='/*' element={<PageNotFound />} /> */}
       </Routes>
     </Container>
+  );
+};
+
+const AccountFormInput = ({ name, value }) => {
+  return (
+    <Grid p={0} container item>
+      <Grid item display='flex' xs={3} justifyContent='end' alignItems='center' px={1}>
+        {name}
+      </Grid>
+      <Grid item display='flex' xs={6} px={1} alignItems='center'>
+        {value}
+      </Grid>
+    </Grid>
   );
 };
 

@@ -1,9 +1,8 @@
 import { Button, Container, Grid, Typography } from '@mui/material';
 import { axiosPrivate } from '../../axios';
 import theme from 'components/theme';
-import { LinkButton } from 'components/utils';
 import AuthContext from 'context/authContext';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const CourseDescription = ({ coverImg, title, description, price, duration }) => {
@@ -37,7 +36,7 @@ const CourseDescription = ({ coverImg, title, description, price, duration }) =>
     }
   }, []);
 
-  const handleSubmit = (e) => {
+  const handlePurchase = (e) => {
     e.preventDefault();
 
     if (user && !user.isAuthor) {
@@ -71,7 +70,7 @@ const CourseDescription = ({ coverImg, title, description, price, duration }) =>
           <Typography variant='body1' py={3} px={1} color='grey'>
             {`${price} KRW`}
           </Typography>
-          <Button onClick={handleSubmit} variant='contained' size='large'>
+          <Button onClick={handlePurchase} variant='contained' size='large'>
             Purchase
           </Button>
         </Grid>

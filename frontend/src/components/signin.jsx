@@ -56,7 +56,7 @@ export default function SignIn() {
 
       console.log(userRes.data);
       // setUser({ ...userRes.data });
-      const account = userRes.data.isAuthor ? '/author' : userRes.data ? '/student' : '/';
+      const account = userRes.data.isAuthor ? '/author' : userRes.data ? '/student/courses' : '/';
       navigate(account, { replace: true });
       setUser(userRes.data);
     } catch (err) {
